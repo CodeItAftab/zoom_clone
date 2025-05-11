@@ -54,7 +54,12 @@ const CallList = ({ type }: { type: "ended" | "upcoming" | "recordings" }) => {
 
         const recordings = callData
           .filter((call) => call.recordings.length > 0)
-          .flatMap((call) => call.recordings);
+          .flatMap((call) => call.recordings)
+          .map((recording) => ({
+            ...recording,
+            end_time: new Date(recording.end_time), // Convert end_time to Date
+            start_time: new Date(recording.start_time), // Convert start_time to Date
+          }));
 
         setRecordings(recordings);
       } catch (error) {
