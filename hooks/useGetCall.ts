@@ -51,10 +51,31 @@ export const useGetCalls = () => {
     return startsAt && new Date(startsAt) > now;
   });
 
+  const getFirstUpcomingCallTime = () => {
+    const firstUpcomingCall = upcomingCalls[0] as Call;
+    if (!firstUpcomingCall) return null;
+    const startsAt = firstUpcomingCall.state.startsAt
+      ? new Date(firstUpcomingCall.state.startsAt)
+      : undefined;
+    const formattedDate = startsAt
+      ? startsAt.toLocaleString("en-US", {
+          month: "2-digit",
+          day: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : undefined;
+    return {
+      startsAt: formattedDate,
+    };
+  };
+
   return {
     endedCalls,
     upcomingCalls,
     callRecordings: calls,
     isLoading,
+    getFirstUpcomingCallTime,
   };
 };
